@@ -2191,6 +2191,12 @@ CertificateTemplate= WebServer
             $expression = "choco install setdefaultbrowser -y"
             Invoke-Expression $expression
             $ErrorActionPreference = "Stop" 
+            
+            # Run Set Default Browser to set Edge as default browser
+            Write-Verbose 'Setting Edge as default browser in admincenter vm'
+            $expression = "SetDefaultBrowser.exe Edge delay=1000"
+            Invoke-Expression $expression
+            $ErrorActionPreference = "Stop" 
 
             # Install Kubectl
             Write-Verbose 'Installing kubectl'
@@ -2208,13 +2214,13 @@ CertificateTemplate= WebServer
             $Shortcut.TargetPath = $TargetPath
             $Shortcut.Save()
 
-            # Add Scheduled task to set default browser at login
-            $stTrigger = New-ScheduledTaskTrigger -AtLogOn
-            $stTrigger.Delay = 'PT1M'
-            $stAction = New-ScheduledTaskAction -Execute "C:\ProgramData\chocolatey\bin\SetDefaultBrowser.exe" -Argument 'Edge'
-            $principal = New-ScheduledTaskPrincipal -UserID "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel Highest
-            $settings = New-ScheduledTaskSettingsSet -MultipleInstances Parallel
-            Register-ScheduledTask -Action $stAction -Trigger $stTrigger -TaskName SetDefaultBrowser -Settings $settings -Principal $principal -Force
+            # # Add Scheduled task to set default browser at login
+            # $stTrigger = New-ScheduledTaskTrigger -AtLogOn
+            # $stTrigger.Delay = 'PT1M'
+            # $stAction = New-ScheduledTaskAction -Execute "C:\ProgramData\chocolatey\bin\SetDefaultBrowser.exe" -Argument 'Edge'
+            # $principal = New-ScheduledTaskPrincipal -UserID "NT AUTHORITY\SYSTEM" -LogonType ServiceAccount -RunLevel Highest
+            # $settings = New-ScheduledTaskSettingsSet -MultipleInstances Parallel
+            # Register-ScheduledTask -Action $stAction -Trigger $stTrigger -TaskName SetDefaultBrowser -Settings $settings -Principal $principal -Force
 
             # Disable Edge 'First Run' Setup
             $edgePolicyRegistryPath  = 'HKLM:SOFTWARE\Policies\Microsoft\Edge'
