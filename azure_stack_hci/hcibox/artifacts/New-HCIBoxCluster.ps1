@@ -2191,12 +2191,6 @@ CertificateTemplate= WebServer
             $expression = "choco install setdefaultbrowser -y"
             Invoke-Expression $expression
             $ErrorActionPreference = "Stop" 
-            
-            # Run Set Default Browser to set Edge as default browser
-            Write-Verbose 'Setting Edge as default browser in admincenter vm'
-            $expression = "SetDefaultBrowser.exe Edge delay=1000"
-            Invoke-Expression $expression
-            $ErrorActionPreference = "Stop" 
 
             # Install Kubectl
             Write-Verbose 'Installing kubectl'
@@ -2231,6 +2225,12 @@ CertificateTemplate= WebServer
             $savePasswordRegistryValue = '0x00000000'
             $autoArrangeRegistryName = 'FFlags'
             $autoArrangeRegistryValue = '1075839525'
+                        
+            # Run Set Default Browser to set Edge as default browser
+            Write-Verbose 'Setting Edge as default browser in admincenter vm'
+            $expression = "SetDefaultBrowser.exe Edge delay=1000"
+            Invoke-Expression $expression
+            $ErrorActionPreference = "Stop" 
 
             if (-NOT (Test-Path -Path $edgePolicyRegistryPath)) {
                 New-Item -Path $edgePolicyRegistryPath -Force | Out-Null
