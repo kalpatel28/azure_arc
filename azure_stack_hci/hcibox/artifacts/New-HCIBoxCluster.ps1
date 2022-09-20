@@ -2228,7 +2228,7 @@ CertificateTemplate= WebServer
                         
             # Run Set Default Browser to set Edge as default browser
             Write-Verbose 'Setting Edge as default browser in admincenter vm'
-            $expression = "SetDefaultBrowser.exe Edge delay=1000"
+            $expression = "SetDefaultBrowser.exe Edge"
             Invoke-Expression $expression
             $ErrorActionPreference = "Stop" 
 
