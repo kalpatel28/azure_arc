@@ -2192,6 +2192,14 @@ CertificateTemplate= WebServer
             Invoke-Expression $expression
             $ErrorActionPreference = "Stop" 
 
+            
+            # Run Set Default Browser to set Edge as default browser
+            Write-Verbose 'Setting Edge as default browser in admincenter vm - 1'
+            $expression = "SetDefaultBrowser Edge"
+            Invoke-Expression $expression
+            $ErrorActionPreference = "Stop" 
+
+
             # Install Kubectl
             Write-Verbose 'Installing kubectl'
             $expression = "choco install kubernetes-cli -y"
@@ -2225,10 +2233,10 @@ CertificateTemplate= WebServer
             $savePasswordRegistryValue = '0x00000000'
             $autoArrangeRegistryName = 'FFlags'
             $autoArrangeRegistryValue = '1075839525'
-                        
+            
             # Run Set Default Browser to set Edge as default browser
-            Write-Verbose 'Setting Edge as default browser in admincenter vm'
-            $expression = "SetDefaultBrowser.exe Edge"
+            Write-Verbose 'Setting Edge as default browser in admincenter vm - 2'
+            $expression = "SetDefaultBrowser Edge"
             Invoke-Expression $expression
             $ErrorActionPreference = "Stop" 
 
