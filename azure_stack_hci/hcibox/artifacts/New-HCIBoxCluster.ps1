@@ -2191,12 +2191,6 @@ CertificateTemplate= WebServer
             $expression = "choco install setdefaultbrowser -y"
             Invoke-Expression $expression
             $ErrorActionPreference = "Stop" 
-            
-            # # Set Edge as default browser
-            # Write-Verbose 'Setting Edge as default browser in admincenter vm - 1'
-            # $expression = "SetDefaultBrowser.exe HKLM 'Microsoft Edge'"
-            # Invoke-Expression $expression
-            # $ErrorActionPreference = "Stop" 
 
             # Install Kubectl
             Write-Verbose 'Installing kubectl'
@@ -2234,7 +2228,7 @@ CertificateTemplate= WebServer
             
             # Set Edge as default browser
             Write-Verbose 'Setting Edge as default browser in admincenter vm - 1'
-            $expression = "SetDefaultBrowser.exe HKLM 'Microsoft Edge'"
+            $expression = "SetDefaultBrowser.exe Edge"
             Invoke-Expression $expression
             $ErrorActionPreference = "Stop" 
 
