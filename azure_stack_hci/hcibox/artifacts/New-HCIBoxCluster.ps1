@@ -2216,6 +2216,13 @@ CertificateTemplate= WebServer
             # $settings = New-ScheduledTaskSettingsSet -MultipleInstances Parallel
             # Register-ScheduledTask -Action $stAction -Trigger $stTrigger -TaskName SetDefaultBrowser -Settings $settings -Principal $principal -Force
 
+            # Add Scheduled task to set default browser at Connection
+            $cimTriggerClass = Get-CimClass -ClassName MSFT_TaskSessionStateChangeTrigger -Namespace Root/Microsoft/Windows/TaskScheduler:MSFT_TaskSessionStateChangeTrigger
+            $stTrigger = New-CimInstance -CimClass $cimTriggerClass -Property @{StateChange="3"} -ClientOnly
+            $stAction = New-ScheduledTaskAction -Execute "C:\ProgramData\chocolatey\bin\SetDefaultBrowser.exe" -Argument 'Edge'
+            $settings = New-ScheduledTaskSettingsSet -MultipleInstances Parallel
+            Register-ScheduledTask -Action $stAction -Trigger $stTrigger -TaskName SetDefaultBrowser -Settings $settings -User (($SDNConfig.SDNDomainFQDN.Split(".")[0]) + "\administrator") -Password $SDNConfig.SDNAdminPassword -Force
+
             # Disable Edge 'First Run' Setup
             $edgePolicyRegistryPath  = 'HKLM:SOFTWARE\Policies\Microsoft\Edge'
             $desktopSettingsRegistryPath = 'HKCU:SOFTWARE\Microsoft\Windows\Shell\Bags\1\Desktop'
@@ -2226,12 +2233,6 @@ CertificateTemplate= WebServer
             $autoArrangeRegistryName = 'FFlags'
             $autoArrangeRegistryValue = '1075839525'
             
-            # Set Edge as default browser
-            Write-Verbose 'Setting Edge as default browser in admincenter vm - 1'
-            $expression = "SetDefaultBrowser.exe Edge"
-            Invoke-Expression $expression
-            $ErrorActionPreference = "Stop" 
-
             if (-NOT (Test-Path -Path $edgePolicyRegistryPath)) {
                 New-Item -Path $edgePolicyRegistryPath -Force | Out-Null
             }
